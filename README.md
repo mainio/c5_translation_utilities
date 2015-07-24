@@ -18,3 +18,9 @@ This also integrates with the [twig templates](https://github.com/mainio/c5pkg_t
 cd your/project/folder/concrete/bin
 ./concrete5 translations:extract_translations your_package_handle
 ```
+
+## License
+
+Licensed under the MIT license. See LICENSE for more information.
+
+Copyright (c) 2015 Mainio Tech Ltd.
