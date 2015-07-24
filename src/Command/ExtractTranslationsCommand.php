@@ -42,8 +42,13 @@ class ExtractTranslationsCommand extends Command
 
         $translations = new Translations();
 
-        $this->parsePhpTranslations($pkg, $translations);
-        $this->parseTwigTranslations($pkg, $translations);
+        $extractedFrom = array();
+        if ($this->parsePhpTranslations($pkg, $translations)) {
+            $extractedFrom[] = 'php';
+        }
+        if ($this->parseTwigTranslations($pkg, $translations)) {
+            $extractedFrom[] = 'twig';
+        }
 
         $dir = $pkg->getPackagePath() . '/' . DIRNAME_LANGUAGES;
         if (!file_exists($dir)) {
@@ -55,7 +60,7 @@ class ExtractTranslationsCommand extends Command
         $pot = $dir . '/messages.pot';
         PoGenerator::toFile($translations, $pot);
 
-        $output->writeln("Templates compiled.");
+        $output->writeln(sprintf("Translations extracted. Extracted from: %s.", implode(', ', $extractedFrom)));
     }
 
     protected function parsePhpTranslations(Package $pkg, Translations $translations)
@@ -67,6 +72,8 @@ class ExtractTranslationsCommand extends Command
             $pkg->getRelativePath(),
             $translations
         );
+
+        return true;
     }
 
     protected function parseTwigTranslations(Package $pkg, Translations $translations)
